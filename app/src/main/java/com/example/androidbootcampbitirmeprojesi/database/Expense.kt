@@ -9,14 +9,19 @@ import java.util.*
 data class Expense(
     @PrimaryKey(autoGenerate = true)
     val id : Long = 0L,
-    @ColumnInfo
+
+    @ColumnInfo(name = "Amount")
     val amount: Long = 0L,
-    @ColumnInfo
-    val currency: Int = 1,
-    @ColumnInfo
-    val type: Int = 1,
-    @ColumnInfo
-    val comment: String = "No comment",
-    @ColumnInfo
-    val date: Calendar = Calendar.getInstance()
+
+    @ColumnInfo(name = "Currency")
+    val currency: Int = 0,
+
+    @ColumnInfo(name = "Type")
+    val type: Int = 0
+
+    //@ColumnInfo(name = "Comment")
+    //val comment: String = "No comment",
+
+    //@ColumnInfo(name = "Date")
+    //val date: Calendar = Calendar.getInstance()
 )

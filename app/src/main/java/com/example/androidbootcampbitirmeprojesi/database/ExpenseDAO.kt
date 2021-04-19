@@ -11,11 +11,14 @@ interface ExpenseDAO {
     @Query("Select * From expense_table Order By amount")
     fun getExpensesWithAmount(): LiveData<List<Expense>>
 
-    @Query("Select * From expense_table Order By date")
-    fun getExpensesWithDate(): LiveData<List<Expense>>
+    //@Query("Select * From expense_table Order By date")
+    //fun getExpensesWithDate(): LiveData<List<Expense>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(expense: Expense)
+    fun insert(expense: Expense)
+
+    @Query("Select * From expense_table Order By Id Limit 1")
+    fun getLastExpense(): Expense?
 
     @Query("Delete From expense_table Where id = :selectingId")
     fun deleteWithId(selectingId: Long)
