@@ -1,29 +1,34 @@
 package com.example.androidbootcampbitirmeprojesi
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.androidbootcampbitirmeprojesi.database.Expense
 import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
-class ExpenseViewModel(private val repository: ExpenseRepository) :ViewModel() {
-    val allExpenses :LiveData<List<Expense>> = repository.allExpenses
+class ExpenseViewModel(private val repository: ExpenseRepository, app: Application) :ViewModel() {
+    private val allExpenses :LiveData<List<Expense>> = repository.allExpenses
+
+    val expensesString = Transformations.map(allExpenses) {allExpenses ->
+        convertExpenseToString(allExpenses, app.resources)
+    }
 
     fun insert(expense: Expense) = viewModelScope.launch{
         repository.insert(expense)
+    }
+    fun getLastExpense() = viewModelScope.launch{
+        repository.getLastExpense()
     }
 
 }
 
 
-class ExpenseViewModelFactory(private val repository: ExpenseRepository) : ViewModelProvider.Factory {
+class ExpenseViewModelFactory(private val repository: ExpenseRepository, private val app: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ExpenseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ExpenseViewModel(repository) as T
+            return ExpenseViewModel(repository, app) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

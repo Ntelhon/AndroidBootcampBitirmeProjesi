@@ -12,4 +12,9 @@ class ExpenseRepository(private val expenseDAO: ExpenseDAO) {
     suspend fun insert(expense: Expense){
         expenseDAO.insert(expense)
     }
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun getLastExpense(){
+        expenseDAO.getLastExpense()
+    }
 }

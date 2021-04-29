@@ -39,12 +39,12 @@ class DatabaseTest {
     @Test
     @Throws(Exception::class)
     fun addAnExpenseAndRead() {
-        //runBlocking {
+        runBlocking {
             val expense = Expense()
             expenseDAO.insert(expense)
             val lastExpense = expenseDAO.getLastExpense()
             assertEquals(lastExpense?.currency, 0)
-        //}
+        }
     }
 
 }

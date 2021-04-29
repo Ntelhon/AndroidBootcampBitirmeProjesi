@@ -7,13 +7,17 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.androidbootcampbitirmeprojesi.FirstFragment"
+        android:name="com.example.androidbootcampbitirmeprojesi.ExpensesFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_expenses">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_expenseInsertFragment"
+            app:destination="@id/expenseInsertFragment"
+            app:popUpTo="@id/FirstFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -25,4 +29,9 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/expenseInsertFragment"
+        android:name="com.example.androidbootcampbitirmeprojesi.ExpenseInsertFragment"
+        android:label="fragment_expense_insert"
+        tools:layout="@layout/fragment_expense_insert" />
 </navigation>

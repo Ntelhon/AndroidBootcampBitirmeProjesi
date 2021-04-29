@@ -10,4 +10,22 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="add">Ekle</string>
+
+    <string name="currency_0">TL</string>
+    <string name="currency_1">Dolar</string>
+    <string name="currency_2">Euro</string>
+    <string name="currency_3">Sterlin</string>
+
+    <string name="type_0">Gıda</string>
+    <string name="type_1">Giyim</string>
+    <string name="type_2">Fatura</string>
+    <string name="type_3">Kira</string>
+    <string name="type_4">Eğitim</string>
+    <string name="type_5">Diğer</string>
+
+    <string name="temporary_title">Expense</string>
+    <string name="amount">Amount: </string>
+    
+    <string name="insert_screen_title">Harcama Ekleme Ekranı</string>
+
 </resources>
