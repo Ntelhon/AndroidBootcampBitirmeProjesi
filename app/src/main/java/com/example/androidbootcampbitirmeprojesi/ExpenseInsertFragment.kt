@@ -42,7 +42,7 @@ class ExpenseInsertFragment : Fragment() {
         val radioId = binding.radioButtonDollar.id
         val radioIdType = binding.radioButtonType0.id
 
-        var comment:String
+        var comment:String?
         var amountString:String
         var amount:Int?
         var currency:Int?

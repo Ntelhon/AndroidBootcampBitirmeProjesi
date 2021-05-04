@@ -31,6 +31,14 @@ fun convertTypeToString(type: Int, resources: Resources): String {
     return typeString
 }
 
+fun sumAllExpenses(expenses: List<Expense>, resources: Resources): Int {
+    var sum :Int = 0
+    expenses.forEach {
+        sum += it.amount
+    }
+    return sum
+}
+
 /*
 fun convertExpenseToString(expenses: List<Expense>, resources: Resources): Spanned {
     val sb = StringBuilder()

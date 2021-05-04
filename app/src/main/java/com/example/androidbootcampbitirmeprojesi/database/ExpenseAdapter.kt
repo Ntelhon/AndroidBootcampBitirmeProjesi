@@ -25,7 +25,7 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
         holder.expenseName.text = item.comment
         if (item.comment.length > 15) {
-            //kelimeyi kes kalanına "..." koy
+            holder.expenseName.text = item.comment.substring(0,14) + "..."
         }
         if (item.amount.toString().length > 5) {
             holder.expenseAmountAndCurrency.textSize = 18F
