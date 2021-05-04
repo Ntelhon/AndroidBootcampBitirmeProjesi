@@ -23,7 +23,10 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
         val item = data[position]
         val res = holder.itemView.context.resources
 
-        holder.expenseName.text = "Coming Soon!"
+        holder.expenseName.text = item.comment
+        if (item.comment.length > 15) {
+            //kelimeyi kes kalanına "..." koy
+        }
         if (item.amount.toString().length > 5) {
             holder.expenseAmountAndCurrency.textSize = 18F
         }

@@ -42,6 +42,7 @@ class ExpenseInsertFragment : Fragment() {
         val radioId = binding.radioButtonDollar.id
         val radioIdType = binding.radioButtonType0.id
 
+        var comment:String
         var amountString:String
         var amount:Int?
         var currency:Int?
@@ -50,11 +51,13 @@ class ExpenseInsertFragment : Fragment() {
         binding.buttonExpenseInsert.setOnClickListener {
             amountString = binding.editTextAmount.text.toString()
             if (amountString!="" && amountString.length < 7) {
+                comment = binding.editTextCommet.text.toString()
                 amount = amountString.toInt()
                 currency = binding.radioGroup.checkedRadioButtonId - radioId
                 type = binding.radioGroupType.checkedRadioButtonId - radioIdType
 
                 var expense = Expense()
+                expense.comment = comment as String
                 expense.amount = amount as Int
                 expense.currency = currency as Int
                 expense.type = type as Int

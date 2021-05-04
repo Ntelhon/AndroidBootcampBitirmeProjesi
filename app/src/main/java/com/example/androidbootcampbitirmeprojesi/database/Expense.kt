@@ -17,10 +17,10 @@ data class Expense(
     var currency: Int = 0,
 
     @ColumnInfo(name = "Type")
-    var type: Int = 0
+    var type: Int = 0,
 
-    //@ColumnInfo(name = "Comment")
-    //val comment: String = "No comment",
+    @ColumnInfo(name = "Comment")
+    var comment: String = "No comment"
 
     //@ColumnInfo(name = "Date")
     //val date: Calendar = Calendar.getInstance()
