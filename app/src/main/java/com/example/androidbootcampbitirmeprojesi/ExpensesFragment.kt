@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.androidbootcampbitirmeprojesi.database.Expense
+import com.example.androidbootcampbitirmeprojesi.database.ExpenseAdapter
 import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
 import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
 import com.example.androidbootcampbitirmeprojesi.databinding.FragmentExpensesBinding
@@ -32,11 +33,14 @@ class ExpensesFragment : Fragment() {
 
         //binding.setLifecycleOwner(this)
 
-        binding.buttonAdd.setOnClickListener {
-            val expense = Expense()
-            expenseViewModel.insert(expense)
-        }
+        val adapter = ExpenseAdapter()
+        binding.recyclerViewExpenses.adapter = adapter
 
+        expenseViewModel.allExpenses.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
+            }
+        })
 
         return binding.root
     }

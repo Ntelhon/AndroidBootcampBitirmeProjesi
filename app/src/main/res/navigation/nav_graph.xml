@@ -33,5 +33,9 @@
         android:id="@+id/expenseInsertFragment"
         android:name="com.example.androidbootcampbitirmeprojesi.ExpenseInsertFragment"
         android:label="fragment_expense_insert"
-        tools:layout="@layout/fragment_expense_insert" />
+        tools:layout="@layout/fragment_expense_insert" >
+        <action
+            android:id="@+id/action_expenseInsertFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
 </navigation>

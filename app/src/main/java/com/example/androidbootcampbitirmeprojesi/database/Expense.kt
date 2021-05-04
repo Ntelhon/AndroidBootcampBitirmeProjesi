@@ -11,13 +11,13 @@ data class Expense(
     val id : Long = 0L,
 
     @ColumnInfo(name = "Amount")
-    val amount: Long = 0L,
+    var amount: Int = 0,
 
     @ColumnInfo(name = "Currency")
-    val currency: Int = 0,
+    var currency: Int = 0,
 
     @ColumnInfo(name = "Type")
-    val type: Int = 0
+    var type: Int = 0
 
     //@ColumnInfo(name = "Comment")
     //val comment: String = "No comment",

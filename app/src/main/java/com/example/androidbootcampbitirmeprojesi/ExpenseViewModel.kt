@@ -8,17 +8,16 @@ import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 class ExpenseViewModel(private val repository: ExpenseRepository, app: Application) :ViewModel() {
-    private val allExpenses :LiveData<List<Expense>> = repository.allExpenses
-
-    val expensesString = Transformations.map(allExpenses) {allExpenses ->
-        convertExpenseToString(allExpenses, app.resources)
-    }
+    val allExpenses :LiveData<List<Expense>> = repository.allExpenses
 
     fun insert(expense: Expense) = viewModelScope.launch{
         repository.insert(expense)
     }
     fun getLastExpense() = viewModelScope.launch{
         repository.getLastExpense()
+    }
+    fun deleteAll() = viewModelScope.launch {
+        repository.deleteAll()
     }
 
 }

@@ -8,15 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.androidbootcampbitirmeprojesi.database.Expense
+import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
+import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
 import com.example.androidbootcampbitirmeprojesi.databinding.FragmentExpenseInsertBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlin.math.absoluteValue
 
-class ExpenseInsertFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class ExpenseInsertFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,41 +29,64 @@ class ExpenseInsertFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val binding : FragmentExpenseInsertBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_expense_insert, container, false)
 
-        val items = listOf("Gıda", "Giyim", "Fatura", "Kira", "Eğitim", "Diğer")
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        binding.exposedDropdownMenu.setAdapter(adapter)
-        binding.exposedDropdownMenu.onItemSelectedListener = this
+        val app = requireNotNull(this.activity).application
+        val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
+        val repository = ExpenseRepository(dao)
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, app)
+        val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
+
+        //val items = listOf("Gıda", "Giyim", "Fatura", "Kira", "Eğitim", "Diğer")
+        //val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        //binding.exposedDropdownMenu.setAdapter(adapter)
 
         val radioId = binding.radioButtonDollar.id
+        val radioIdType = binding.radioButtonType0.id
 
         var amountString:String
         var amount:Int?
         var currency:Int?
-        val type:Int
+        var type:Int?
 
         binding.buttonExpenseInsert.setOnClickListener {
             amountString = binding.editTextAmount.text.toString()
-            if (amountString!=null && amountString!="") {
+            if (amountString!="" && amountString.length < 7) {
                 amount = amountString.toInt()
                 currency = binding.radioGroup.checkedRadioButtonId - radioId
-                binding.temporaryText.text =
-                    "Amt: " + amount + " Cur: " + currency + " Typ: "
-            } else {
+                type = binding.radioGroupType.checkedRadioButtonId - radioIdType
+
+                var expense = Expense()
+                expense.amount = amount as Int
+                expense.currency = currency as Int
+                expense.type = type as Int
+                expenseViewModel.insert(expense)
+
+                Snackbar.make(
+                        it,
+                        "Harcamanız Başarıyla Eklenti",
+                        Snackbar.LENGTH_SHORT
+                ).show()
+
+                findNavController().navigate(R.id.action_expenseInsertFragment_to_FirstFragment)
+
+            } else if (amountString.length > 6){
                 Snackbar.make(
                     it,
-                    "Lütfen bir miktar giriniz!",
+                    "En fazla 6 karakter girebilirsiniz!",
                     Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                Snackbar.make(
+                        it,
+                        "Lütfen bir miktar giriniz!",
+                        Snackbar.LENGTH_LONG
                 ).show()
             }
         }
 
-        return binding.root
-    }
+        binding.temporaryClearAllButton.setOnClickListener {
+            expenseViewModel.deleteAll()
+        }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //val type: LiveData<Int> = parent?.getItemAtPosition(position) as LiveData<Int>
-    }
-    override fun onNothingSelected(parent: AdapterView<*>) {
-        parent.setSelection(0)
+        return binding.root
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/expense_type"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/other" />
+
+    <TextView
+        android:id="@+id/expense_name"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginEnd="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/expense_type"
+        app:layout_constraintTop_toTopOf="@+id/expense_type"
+        tools:text="Donate to App" />
+
+    <TextView
+        android:id="@+id/expense_amount_and_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center_vertical"
+        android:maxWidth="85dp"
+        android:maxLength="12"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/expense_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/expense_type"
+        tools:text="5$" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

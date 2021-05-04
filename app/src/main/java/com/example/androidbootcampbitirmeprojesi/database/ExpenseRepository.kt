@@ -17,4 +17,9 @@ class ExpenseRepository(private val expenseDAO: ExpenseDAO) {
     suspend fun getLastExpense(){
         expenseDAO.getLastExpense()
     }
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteAll(){
+        expenseDAO.deleteAll()
+    }
 }

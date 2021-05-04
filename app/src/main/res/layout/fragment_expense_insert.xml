@@ -38,7 +38,7 @@
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!--<com.google.android.material.textfield.TextInputLayout
         android:id="@+id/menuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,16 +55,63 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             />
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <RadioGroup
+        android:id="@+id/radioGroupType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextAmountLayout">
+
+        <RadioButton
+            android:id="@+id/radioButtonType0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_0"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonType1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_1"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonType2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_2"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonType3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_3"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonType4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_4"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonType5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/type_5"/>
+
+    </RadioGroup>
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menuLayout">
+        app:layout_constraintTop_toBottomOf="@id/editTextAmountLayout">
 
         <RadioButton
             android:id="@+id/radioButtonDollar"
@@ -112,9 +159,9 @@
 
     <ImageView
         android:id="@+id/imageViewSterling"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="56dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/euro"
@@ -134,15 +181,16 @@
         tools:layout_editor_absoluteX="128dp" />
 
 
-    <TextView
-        android:id="@+id/temporaryText"
+    <Button
+        android:id="@+id/temporaryClearAllButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
+        android:layout_marginTop="300dp"
+        android:text="Tüm Harcamaları Sil"
         app:layout_constraintBottom_toTopOf="@+id/buttonExpenseInsert"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewDollar"
-        app:layout_constraintTop_toBottomOf="@+id/menuLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAmountLayout" />
 
     <Button
         android:id="@+id/buttonExpenseInsert"
