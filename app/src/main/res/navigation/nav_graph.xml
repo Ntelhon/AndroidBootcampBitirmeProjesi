@@ -13,7 +13,8 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@id/FirstFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_expenseInsertFragment"
             app:destination="@id/expenseInsertFragment"
@@ -27,7 +28,16 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment">
+            <argument android:name="userName"
+                app:argType="string"
+                android:defaultValue="Kullanıcı"
+                app:nullable="true"/>
+            <argument android:name="gender"
+                app:argType="int"
+                android:defaultValue="2"
+                app:nullable="false"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/expenseInsertFragment"

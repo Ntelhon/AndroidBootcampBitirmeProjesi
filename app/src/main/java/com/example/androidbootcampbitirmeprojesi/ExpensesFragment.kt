@@ -44,6 +44,10 @@ class ExpensesFragment : Fragment() {
             }
         })
 
+        binding.buttonProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+
         binding.buttonGroupQuery.check(when(ExpenseViewModel.lastCheckedQuery) {
             1 -> R.id.buttonQueryDollar
             2 -> R.id.buttonQueryEuro
@@ -99,9 +103,6 @@ class ExpensesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //view.findViewById<Button>(R.id.button_first).setOnClickListener {
-        //    findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        //}
         view.findViewById<ExtendedFloatingActionButton>(R.id.fab).setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_expenseInsertFragment)
         }

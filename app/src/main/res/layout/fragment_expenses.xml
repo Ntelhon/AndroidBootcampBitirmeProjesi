@@ -13,55 +13,93 @@
         android:layout_height="match_parent"
         tools:context=".ExpensesFragment">
 
-        <RelativeLayout
-            android:id="@+id/button_first"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/purple_200"
-            android:text="@string/next"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/hGuideline"
+            android:background="@color/purple_200"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/buttonProfile"
+            android:layout_width="180dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:gravity="start|center"
+            android:text="@string/hello"
+            android:paddingBottom="35dp"
+            android:paddingTop="5dp"
+            android:textAlignment="viewStart"
+            app:backgroundTint="#009688"
+            android:textAllCaps="false"
+            app:icon="@android:drawable/progress_horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="80dp"
-                android:text="Toplam Harcamanız"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/textViewHi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="@id/buttonProfile"
+            app:layout_constraintStart_toStartOf="@id/buttonProfile"
+            android:text="@string/hello"/>
+        <TextView
+            android:id="@+id/textWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/textViewHi"
+            app:layout_constraintStart_toStartOf="@id/buttonProfile"
+            android:text="Ali Bey"/>
 
-            <TextView
-                android:id="@+id/textCurrencies"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:text="Yeey"
-                android:textSize="14sp" />
+        <TextView
+            android:id="@+id/textViewTotalExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/total_sum"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <TextView
-                android:id="@+id/textViewTotalExpense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="85dp"
-                android:layout_marginBottom="40dp"
-                android:text="0 TL"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/textViewTotalExpenseNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 TL"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewTotalExpense"
+            app:layout_constraintEnd_toEndOf="@id/textViewTotalExpense"/>
+
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/hGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="150dp"/>
+
+
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/buttonGroupQuery"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintTop_toBottomOf="@id/button_first"
+            app:layout_constraintTop_toBottomOf="@id/hGuideline"
             app:layout_constraintBottom_toTopOf="@id/coordinatorLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,12 +160,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:src="@android:drawable/ic_menu_sort_by_size"
             app:layout_constraintBottom_toTopOf="@id/coordinatorLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_first" />
+            app:layout_constraintTop_toBottomOf="@id/hGuideline" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
@@ -157,6 +195,7 @@
                 android:layout_height="wrap_content" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

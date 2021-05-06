@@ -27,5 +27,13 @@
     <string name="amount">Amount: </string>
 
     <string name="insert_screen_title">Harcama Ekleme Ekranı</string>
+    <string name="total_sum">Toplam Harcamanız</string>
+    <string name="hello">Merhaba</string>
+    <string name="change_name_screen_title">Profil Ekranı</string>
+    <string name="enter_name">İsminizi giriniz</string>
+    <string name="man">Erkek</string>
+    <string name="woman">Kadın</string>
+    <string name="dont_enter_gender">Belirtmek İstemiyorum</string>
+    <string name="save">Kaydet</string>
 
 </resources>
