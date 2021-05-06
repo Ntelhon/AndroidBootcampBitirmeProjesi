@@ -12,6 +12,7 @@ import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.androidbootcampbitirmeprojesi.database.ApiDataRoomDatabase
 import com.example.androidbootcampbitirmeprojesi.database.Expense
 import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
 import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
@@ -32,7 +33,8 @@ class ExpenseInsertFragment : Fragment() {
         val app = requireNotNull(this.activity).application
         val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
         val repository = ExpenseRepository(dao)
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, app)
+        val apiDataDAO = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDAO, app)
         val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
 
         //val items = listOf("Gıda", "Giyim", "Fatura", "Kira", "Eğitim", "Diğer")
@@ -56,7 +58,7 @@ class ExpenseInsertFragment : Fragment() {
                 currency = binding.radioGroup.checkedRadioButtonId - radioId
                 type = binding.radioGroupType.checkedRadioButtonId - radioIdType
 
-                var expense = Expense()
+                val expense = Expense()
                 expense.comment = comment as String
                 expense.amount = amount as Int
                 expense.currency = currency as Int

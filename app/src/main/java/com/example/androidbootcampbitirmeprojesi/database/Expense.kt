@@ -25,3 +25,15 @@ data class Expense(
     //@ColumnInfo(name = "Date")
     //val date: Calendar = Calendar.getInstance()
 )
+
+@Entity(tableName = "only_six")
+data class ApiData(
+    @PrimaryKey(autoGenerate = true)
+    val id :Long = 0L,
+
+    @ColumnInfo(name = "Name")
+    val name: String = "noName",
+
+    @ColumnInfo(name = "value")
+    var value :Float = -1F
+)

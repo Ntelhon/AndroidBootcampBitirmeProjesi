@@ -33,3 +33,32 @@ abstract class ExpenseRoomDatabase :RoomDatabase() {
         }
     }
 }
+
+@Database(entities = [ApiData::class], version = 1, exportSchema = false)
+abstract class ApiDataRoomDatabase :RoomDatabase() {
+
+    abstract fun apiDataDao(): ApiDataDAO
+
+    companion object {
+        @Volatile
+        private var INSTANCE :ApiDataRoomDatabase? = null
+
+        fun getDatabase(context: Context) :ApiDataRoomDatabase {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        ApiDataRoomDatabase::class.java,
+                        "apiData_database"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+
+                    INSTANCE = instance
+                }
+                return instance
+            }
+        }
+    }
+}

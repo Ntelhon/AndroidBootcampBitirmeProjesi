@@ -27,3 +27,18 @@ interface ExpenseDAO {
     suspend fun deleteAll()
 
 }
+
+@Dao
+interface ApiDataDAO {
+    @Query("Select * From only_six Order By id DESC")
+    suspend fun getAll() : List<ApiData>
+
+    @Query("Select * From only_six Where id = :selectingId")
+    suspend fun getId(selectingId: Long) :ApiData
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(apiData: ApiData)
+
+    @Update
+    suspend fun update(apiData :ApiData)
+}
