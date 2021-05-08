@@ -35,5 +35,17 @@
     <string name="woman">Kadın</string>
     <string name="dont_enter_gender">Belirtmek İstemiyorum</string>
     <string name="save">Kaydet</string>
+    <string name="new_user">Yeni Kullanıcı</string>
+    <string name="_0_tl">0 TL</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Sil</string>
+    <string name="tl">TL</string>
+    <string name="dollar">Dolar</string>
+    <string name="euro">Euro</string>
+    <string name="sterling">Sterlin</string>
+    <string name="insert">Ekle</string>
+    <string name="comment">Açıklama</string>
+    <string name="tutar">Tutar</string>
 
 </resources>

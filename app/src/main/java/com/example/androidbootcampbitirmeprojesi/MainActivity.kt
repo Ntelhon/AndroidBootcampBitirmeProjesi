@@ -1,13 +1,10 @@
 package com.example.androidbootcampbitirmeprojesi
 
+import android.content.Context
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.navigation.findNavController
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +16,16 @@ class MainActivity : AppCompatActivity() {
         //findViewById<ExtendedFloatingActionButton>(R.id.fab).setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         //}
+
+        val prefs = getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("firstRun",true) ) {
+
+            prefs.edit().putBoolean("NowInOne", true).apply()
+
+            prefs.edit().putBoolean("firstRun", false).apply()
+        } else {
+            prefs.edit().putBoolean("NowInOne", false).apply()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

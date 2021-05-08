@@ -26,16 +26,11 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
         val curr = ExpenseViewModel.selectedCurrency
 
         holder.expenseName.text = item.comment
-
         if (item.comment.length > 15 && item.comment.isEmpty()) {
             holder.expenseName.text = item.comment.substring(0,14) + "..."
         }
         if (item.comment.isEmpty()) {
             holder.expenseName.text = convertTypeToString(item.type, res)
-        }
-
-        if (item.amount.toString().length > 5) {
-            holder.expenseAmountAndCurrency.textSize = 18F
         }
 
         if (ExpenseViewModel.tLtoDollar == -1f) holder.expenseAmountAndCurrency.text = placeDot(item.amount) +" "+ convertCurrencyToString(item.currency, res)
@@ -47,7 +42,7 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
             holder.expenseAmountAndCurrency.text = placeDot(i) +" "+ convertCurrencyToString(curr, res)
         }
 
-        holder.expenseType.setImageResource(setImageWithType(item.type, res))
+        holder.expenseType.setImageResource(setImageWithType(item.type))
 
     }
 

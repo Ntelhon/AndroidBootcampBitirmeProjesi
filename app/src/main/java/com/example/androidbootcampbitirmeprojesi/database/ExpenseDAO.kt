@@ -41,4 +41,5 @@ interface ApiDataDAO {
 
     @Update
     suspend fun update(apiData :ApiData)
+
 }

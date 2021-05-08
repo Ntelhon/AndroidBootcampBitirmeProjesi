@@ -32,7 +32,7 @@ data class ApiData(
     val id :Long = 0L,
 
     @ColumnInfo(name = "Name")
-    val name: String = "noName",
+    var name: String = "noName",
 
     @ColumnInfo(name = "value")
     var value :Float = -1F

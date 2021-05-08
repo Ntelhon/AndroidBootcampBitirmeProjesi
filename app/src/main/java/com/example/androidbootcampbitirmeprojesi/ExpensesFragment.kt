@@ -1,6 +1,8 @@
 package com.example.androidbootcampbitirmeprojesi
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,13 +27,15 @@ class ExpensesFragment : Fragment() {
     ): View? {
 
         val binding : FragmentExpensesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_expenses, container, false)
+        val prefs = this.activity?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
 
         val app = requireNotNull(this.activity).application
+        val context = context
         val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
         val res = resources
         val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
         val repository = ExpenseRepository(dao)
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao,app)
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao, context)
         val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
 
         binding.lifecycleOwner = this
@@ -47,6 +51,9 @@ class ExpensesFragment : Fragment() {
         binding.buttonProfile.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+
+        binding.textUserName.text = prefs?.getString("userName", "Yeni Kullanıcı")+" "+ convertGenderToAdj(prefs?.getInt("gender", 2))
+
 
         binding.buttonGroupQuery.check(when(ExpenseViewModel.lastCheckedQuery) {
             1 -> R.id.buttonQueryDollar
@@ -77,28 +84,46 @@ class ExpensesFragment : Fragment() {
         }
 
         expenseViewModel.answerApi.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Snackbar.make(requireView(),"Veriler Güncellenemedi.", Snackbar.LENGTH_LONG).show()
-                //binding.textViewTotalExpense.text = "Hata"
+            it?.let { Snackbar.make(requireView(),it, Snackbar.LENGTH_LONG).show() }
+        })
+
+        expenseViewModel.apiStatus.observe(viewLifecycleOwner, Observer {
+            if (it == CurrencyApiStatus.InsertOk) {
+                val intent = Intent (activity, MainActivity::class.java)
+                activity?.startActivity(intent)
             }
         })
 
         expenseViewModel.allExpenses.observe(viewLifecycleOwner, Observer {
-            expenseViewModel.setCompanionsToApiData()
-            val sum = sumAllExpenses(it, ExpenseViewModel.selectedCurrency)
-            val curr = convertCurrencyToString(ExpenseViewModel.selectedCurrency, res)
-            binding.textViewTotalExpense.text = placeDot(sum) +" "+ curr
+
+            if (prefs != null) {
+                if(!prefs.getBoolean("NowInOne", true)){
+                    println("all expenses observer")
+                    expenseViewModel.setCompanionsToApiData()
+
+                    val sum = sumAllExpenses(it, selectedCurrency)
+                    val curr = convertCurrencyToString(selectedCurrency, res)
+                    binding.textViewTotalExpenseNumber.text = placeDot(sum) + " " + curr
+                }
+            }
         })
 
         expenseViewModel.selectedCurrency.observe(viewLifecycleOwner, Observer {
-            expenseViewModel.setCompanionsToApiData()
-            binding.textViewTotalExpense.text =
-                expenseViewModel.selectedCurrency.value?.let { it1 -> placeDot(sumAllExpenses(expenseViewModel.allExpenses.value, it1)) +" "+ convertCurrencyToString(ExpenseViewModel.selectedCurrency, res) }
-            expenseViewModel.allExpenses.value?.let { it1 -> adapter.data = it1 }
+            if (prefs != null) {
+                if (!prefs.getBoolean("NowInOne", true)) {
+                    println("selected currency observer")
+                    expenseViewModel.setCompanionsToApiData()
+
+                    binding.textViewTotalExpenseNumber.text =
+                        expenseViewModel.selectedCurrency.value?.let { it1 -> placeDot(sumAllExpenses(expenseViewModel.allExpenses.value, it1)) + " " + convertCurrencyToString(selectedCurrency, res) }
+                    expenseViewModel.allExpenses.value?.let { it1 -> adapter.data = it1 }
+                }
+            }
         })
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,4 +132,5 @@ class ExpensesFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_expenseInsertFragment)
         }
     }
+
 }

@@ -1,14 +1,16 @@
 package com.example.androidbootcampbitirmeprojesi
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.*
 import com.example.androidbootcampbitirmeprojesi.database.*
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
-enum class CurrencyApiStatus { LOADING, ERROR, DONE }
+enum class CurrencyApiStatus { LOADING, InsertOk, WritingOk, ERROR, DONE }
+private const val ApiKey = "eefc72509d50091ecc31"  //eefc72509d50091ecc31  ---  7593590112cc067660dc
 
-class ExpenseViewModel(private val repository: ExpenseRepository, val apiDataDAO: ApiDataDAO, app: Application) :ViewModel() {
+class ExpenseViewModel(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, context: Context?) :ViewModel() {
+    val prefs = context?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
     val allExpenses :LiveData<List<Expense>> = repository.allExpenses
     companion object {
         var tLtoDollar :Float = -1f
@@ -36,19 +38,20 @@ class ExpenseViewModel(private val repository: ExpenseRepository, val apiDataDAO
 
     init {
         _selectedCurrency.value = 0
-        getCurrencyValues("TRY_USD,TRY_EUR")
-        getCurrencyValues("TRY_GBP,USD_EUR")
-        getCurrencyValues("USD_GBP,EUR_GBP")
+        getCurrencyValues()
     }
 
     fun insert(expense: Expense) = viewModelScope.launch{
         repository.insert(expense)
     }
 
-    fun insertAllApiData() = viewModelScope.launch{
-        for (i in 0..5) {
-            val newData = ApiData()
-            apiDataDAO.insert(newData)
+    private fun insertAllApiData() = viewModelScope.launch{
+        if(apiDataDAO.getAll().isNullOrEmpty()){
+            for (i in 0..5) {
+                val apiData = ApiData()
+                apiDataDAO.insert(apiData)
+                if (i == 5) _apiStatus.value = CurrencyApiStatus.InsertOk
+            }
         }
 
     }
@@ -61,85 +64,99 @@ class ExpenseViewModel(private val repository: ExpenseRepository, val apiDataDAO
         _selectedCurrency.value = currency
     }
 
+    fun getApiStatusValue() : CurrencyApiStatus? {
+        return _apiStatus.value
+    }
+
+
     fun setCompanionsToApiData() {
         viewModelScope.launch {
-            val a = apiDataDAO.getAll() ?: return@launch
-            if(a.size < 6) {
-                insertAllApiData()
+            if(_apiStatus.value == CurrencyApiStatus.DONE)  {
+                val a = apiDataDAO.getAll()
+                tLtoDollar = a[0].value
+                tLtoEuro = a[1].value
+                tLtoSterling = a[2].value
+                dollarToEuro = a[3].value
+                dollarToSterling = a[4].value
+                euroToSterling = a[5].value
             }
-            ExpenseViewModel.tLtoDollar = a[0].value
-            ExpenseViewModel.tLtoEuro = a[1].value
-            ExpenseViewModel.tLtoSterling = a[2].value
-            ExpenseViewModel.dollarToEuro = a[3].value
-            ExpenseViewModel.dollarToSterling = a[4].value
-            ExpenseViewModel.euroToSterling = a[5].value
         }
     }
 
 
-    private fun getCurrencyValues(requestApi :String) {
+    private fun getCurrencyValues() {
         viewModelScope.launch {
             _apiStatus.value = CurrencyApiStatus.LOADING
-            val a = apiDataDAO.getAll() ?: return@launch
-            if(a.size < 6) {
-                insertAllApiData()
-            }
-            when (requestApi) {
-                "TRY_USD,TRY_EUR" -> {
+            for (i in 0..2) {
+                if (i == 0) {
+                    var a = apiDataDAO.getAll()
+                    if(a.isEmpty()) {
+                        insertAllApiData()
+                    }
+                    if (_apiStatus.value == CurrencyApiStatus.InsertOk)  a = apiDataDAO.getAll()
+
                     try {
-                        val listResult = CurrencyApi.retrofitService.getProperties1(requestApi, "ultra", "7593590112cc067660dc")
-                        //_answerApi.value = "$listResult"
+                        val listResult = CurrencyApi.retrofitService.getProperties1("TRY_USD,TRY_EUR", "ultra", ApiKey)
+                        println("${a.size}")
                         a[0].value = listResult.TRY_USD.toFloat()
                         a[1].value = listResult.TRY_EUR.toFloat()
-                        _apiStatus.value = CurrencyApiStatus.DONE
                         apiDataDAO.update(a[0])
                         apiDataDAO.update(a[1])
+                        println("${a[0].value} --- ${a[1].value}")
                     } catch (e: Exception) {
                         _apiStatus.value = CurrencyApiStatus.ERROR
-                        _answerApi.value = "Failure: ${e.message}"
+                        _answerApi.value = "Failure one: ${e.message}"
                     }
                 }
-                "TRY_GBP,USD_EUR" -> {
+
+                if (i == 1) {
+                    val a = apiDataDAO.getAll()
+
                     try {
-                        val listResult = CurrencyApi.retrofitService.getProperties2(requestApi, "ultra", "7593590112cc067660dc")
-                        //_answerApi.value = "$listResult"
+                        val listResult = CurrencyApi.retrofitService.getProperties2("TRY_GBP,USD_EUR", "ultra", ApiKey)
                         a[2].value = listResult.TRY_GBP.toFloat()
                         a[3].value = listResult.USD_EUR.toFloat()
-                        _apiStatus.value = CurrencyApiStatus.DONE
                         apiDataDAO.update(a[2])
                         apiDataDAO.update(a[3])
+                        println("${a[2].value} --- ${a[3].value}")
                     } catch (e: Exception) {
                         _apiStatus.value = CurrencyApiStatus.ERROR
-                        _answerApi.value = "Failure: ${e.message}"
+                        _answerApi.value = "Failure two: ${e.message}"
                     }
                 }
-                "USD_GBP,EUR_GBP" -> {
+
+                if (i ==2) {
+                    val a = apiDataDAO.getAll()
+
                     try {
-                        val listResult = CurrencyApi.retrofitService.getProperties3(requestApi, "ultra", "7593590112cc067660dc")
-                        //_answerApi.value = "$listResult"
+                        val listResult = CurrencyApi.retrofitService.getProperties3("USD_GBP,EUR_GBP", "ultra", ApiKey)
                         a[4].value = listResult.USD_GBP.toFloat()
                         a[5].value = listResult.EUR_GBP.toFloat()
-                        _apiStatus.value = CurrencyApiStatus.DONE
                         apiDataDAO.update(a[4])
                         apiDataDAO.update(a[5])
+                        _apiStatus.value = CurrencyApiStatus.DONE
+                        println("${a[4].value} --- ${a[5].value}")
                     } catch (e: Exception) {
                         _apiStatus.value = CurrencyApiStatus.ERROR
-                        _answerApi.value = "Failure: ${e.message}"
+                        _answerApi.value = "Failure three: ${e.message}"
                     }
                 }
+
             }
 
         }
+
+
     }
 
 }
 
 
-class ExpenseViewModelFactory(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, private val app: Application) : ViewModelProvider.Factory {
+class ExpenseViewModelFactory(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, private val context: Context?) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ExpenseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ExpenseViewModel(repository, apiDataDAO, app) as T
+            return ExpenseViewModel(repository, apiDataDAO, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

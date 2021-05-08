@@ -1,31 +1,57 @@
 package com.example.androidbootcampbitirmeprojesi
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.androidbootcampbitirmeprojesi.database.ApiDataRoomDatabase
+import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
+import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
+import com.example.androidbootcampbitirmeprojesi.databinding.FragmentSecondBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class SecondFragment : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val binding :FragmentSecondBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_second, container, false)
+        val prefs = this.activity?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
 
-        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        val app = requireNotNull(this.activity).application
+        val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
+        val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
+        val repository = ExpenseRepository(dao)
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao)
+        val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
+
+
+        binding.buttonSaveProfile.setOnClickListener {
+            var userName = "Yeni Kullanıcı"
+            if (!binding.editTextName.text.isNullOrEmpty())   userName = binding.editTextName.text.toString()
+
+            val gender = when(binding.radioGroupGender.checkedRadioButtonId) {
+            R.id.radioButtonGender0 -> 0
+            R.id.radioButtonGender1 -> 1
+            R.id.radioButtonGender2 -> 2
+            else -> 2 }
+
+            println("veriler $userName ve $gender")
+            prefs?.edit()?.putString("userName", userName)?.apply()
+            prefs?.edit()?.putInt("gender", gender)?.apply()
+
+            val action = SecondFragmentDirections.actionSecondFragmentToFirstFragment()
+            findNavController().navigate(action)
         }
+
+
+        return binding.root
     }
+
 }

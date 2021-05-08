@@ -3,12 +3,8 @@ package com.example.androidbootcampbitirmeprojesi
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -20,10 +16,6 @@ import com.example.androidbootcampbitirmeprojesi.databinding.FragmentExpenseInse
 import com.google.android.material.snackbar.Snackbar
 
 class ExpenseInsertFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,7 +33,13 @@ class ExpenseInsertFragment : Fragment() {
         //val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
         //binding.exposedDropdownMenu.setAdapter(adapter)
 
-        val radioId = binding.radioButtonDollar.id
+        binding.radioGroup.check(R.id.radioButtonTL)
+
+        binding.imageViewTL.setImageResource(setImageWithCurrency(0))
+        binding.imageViewDollar.setImageResource(setImageWithCurrency(1))
+        binding.imageViewEuro.setImageResource(setImageWithCurrency(2))
+        binding.imageViewSterling.setImageResource(setImageWithCurrency(3))
+
         val radioIdType = binding.radioButtonType0.id
 
         var comment:String?
@@ -55,7 +53,13 @@ class ExpenseInsertFragment : Fragment() {
             if (amountString!="" && amountString.length < 7) {
                 comment = binding.editTextCommet.text.toString()
                 amount = amountString.toInt()
-                currency = binding.radioGroup.checkedRadioButtonId - radioId
+                currency = when(binding.radioGroup.checkedRadioButtonId) {
+                                R.id.radioButtonTL -> 0
+                                R.id.radioButtonDollar -> 1
+                                R.id.radioButtonEuro -> 2
+                                R.id.radioButtonSterling -> 3
+                                else -> 0
+                            }
                 type = binding.radioGroupType.checkedRadioButtonId - radioIdType
 
                 val expense = Expense()

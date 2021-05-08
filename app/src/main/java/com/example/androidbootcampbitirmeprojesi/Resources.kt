@@ -1,13 +1,8 @@
 package com.example.androidbootcampbitirmeprojesi
 
+import android.content.Context
 import android.content.res.Resources
-import android.os.Build
-import android.text.Html
-import android.text.Spanned
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.text.HtmlCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.example.androidbootcampbitirmeprojesi.database.Expense
 
 fun convertCurrencyToString(currency: Int, resources: Resources): String {
@@ -18,6 +13,14 @@ fun convertCurrencyToString(currency: Int, resources: Resources): String {
         3 -> currencyString = resources.getString(R.string.currency_3)
     }
     return currencyString
+}
+
+fun convertGenderToAdj(gender :Int?): String {
+    return when(gender) {
+        0 -> "Bey"
+        1 -> "Hanım"
+        else -> ""
+    }
 }
 
 fun convertTypeToString(type: Int, resources: Resources): String {
@@ -32,8 +35,8 @@ fun convertTypeToString(type: Int, resources: Resources): String {
     return typeString
 }
 
-fun setImageWithType(type :Int, resources: Resources): Int {
-    var a = R.drawable.other
+fun setImageWithType(type :Int): Int {
+    val a: Int
     if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO){
         a = when (type) {
             0 -> R.drawable.food
@@ -58,8 +61,30 @@ fun setImageWithType(type :Int, resources: Resources): Int {
     return a
 }
 
+fun setImageWithCurrency(curr :Int): Int {
+    val a :Int
+    if(AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO){
+        a = when (curr) {
+            0 -> R.drawable.tl
+            1 -> R.drawable.dollar
+            2 -> R.drawable.euro
+            3 -> R.drawable.sterling
+            else -> R.drawable.tl
+        }
+    } else {
+        a = when (curr) {
+            0 -> R.drawable.tl_dark
+            1 -> R.drawable.dollar_dark
+            2 -> R.drawable.euro_dark
+            3 -> R.drawable.sterling_dark
+            else -> R.drawable.tl_dark
+        }
+    }
+    return a
+}
+
 fun placeDot(amount: Int): String {
-    var answer = amount.toString()
+    val answer: String
     val i = amount.toString()
     answer = when(amount.toString().length){
         in 0..3 -> i
@@ -68,15 +93,19 @@ fun placeDot(amount: Int): String {
         6 -> i.substring(0,3)+"."+ i.substring(3)
         7 -> i.substring(0,1)+"."+ i.substring(1,4)+"."+i.substring(4,7)
         8 -> i.substring(0,2)+"."+ i.substring(2,5)+"."+i.substring(5,8)
+        9 -> i.substring(0,3)+"."+ i.substring(3,6)+"."+i.substring(6,9)
         else -> i
     }
     return answer
 }
 
+
+    //val prefs = app.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
+
 fun sumAllExpenses(expenses: List<Expense>?, selectedCurrency :Int): Int {
     var sum = 0
     when {
-        expenses.isNullOrEmpty() -> return sum
+        expenses.isNullOrEmpty() -> { println("expense verisi boş"); return sum }
         selectedCurrency == 0 -> {
             expenses.forEach {
                 when(it.currency) {
