@@ -1,16 +1,15 @@
 package com.example.androidbootcampbitirmeprojesi
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.*
 import com.example.androidbootcampbitirmeprojesi.database.*
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
-enum class CurrencyApiStatus { LOADING, InsertOk, WritingOk, ERROR, DONE }
+enum class CurrencyApiStatus { LOADING, InsertOk, ERROR, DONE }
 private const val ApiKey = "eefc72509d50091ecc31"  //eefc72509d50091ecc31  ---  7593590112cc067660dc
 
-class ExpenseViewModel(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, context: Context?) :ViewModel() {
-    val prefs = context?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
+class ExpenseViewModel(private val repository: ExpenseRepository,private val apiDataDAO: ApiDataDAO, app: Application) :ViewModel() {
     val allExpenses :LiveData<List<Expense>> = repository.allExpenses
     companion object {
         var tLtoDollar :Float = -1f
@@ -47,10 +46,10 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
 
     private fun insertAllApiData() = viewModelScope.launch{
         if(apiDataDAO.getAll().isNullOrEmpty()){
-            for (i in 0..5) {
+            for (i in 0..6) {
                 val apiData = ApiData()
                 apiDataDAO.insert(apiData)
-                if (i == 5) _apiStatus.value = CurrencyApiStatus.InsertOk
+                if (i == 6) _apiStatus.value = CurrencyApiStatus.InsertOk
             }
         }
 
@@ -64,14 +63,9 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
         _selectedCurrency.value = currency
     }
 
-    fun getApiStatusValue() : CurrencyApiStatus? {
-        return _apiStatus.value
-    }
-
-
     fun setCompanionsToApiData() {
         viewModelScope.launch {
-            if(_apiStatus.value == CurrencyApiStatus.DONE)  {
+
                 val a = apiDataDAO.getAll()
                 tLtoDollar = a[0].value
                 tLtoEuro = a[1].value
@@ -79,7 +73,6 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
                 dollarToEuro = a[3].value
                 dollarToSterling = a[4].value
                 euroToSterling = a[5].value
-            }
         }
     }
 
@@ -93,11 +86,10 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
                     if(a.isEmpty()) {
                         insertAllApiData()
                     }
-                    if (_apiStatus.value == CurrencyApiStatus.InsertOk)  a = apiDataDAO.getAll()
+                    a = apiDataDAO.getAll()
 
                     try {
                         val listResult = CurrencyApi.retrofitService.getProperties1("TRY_USD,TRY_EUR", "ultra", ApiKey)
-                        println("${a.size}")
                         a[0].value = listResult.TRY_USD.toFloat()
                         a[1].value = listResult.TRY_EUR.toFloat()
                         apiDataDAO.update(a[0])
@@ -132,9 +124,9 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
                         val listResult = CurrencyApi.retrofitService.getProperties3("USD_GBP,EUR_GBP", "ultra", ApiKey)
                         a[4].value = listResult.USD_GBP.toFloat()
                         a[5].value = listResult.EUR_GBP.toFloat()
+                        _apiStatus.value = CurrencyApiStatus.DONE
                         apiDataDAO.update(a[4])
                         apiDataDAO.update(a[5])
-                        _apiStatus.value = CurrencyApiStatus.DONE
                         println("${a[4].value} --- ${a[5].value}")
                     } catch (e: Exception) {
                         _apiStatus.value = CurrencyApiStatus.ERROR
@@ -152,11 +144,11 @@ class ExpenseViewModel(private val repository: ExpenseRepository, private val ap
 }
 
 
-class ExpenseViewModelFactory(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, private val context: Context?) : ViewModelProvider.Factory {
+class ExpenseViewModelFactory(private val repository: ExpenseRepository, private val apiDataDAO: ApiDataDAO, private val app: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ExpenseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ExpenseViewModel(repository, apiDataDAO, context) as T
+            return ExpenseViewModel(repository, apiDataDAO, app) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -28,7 +28,7 @@ class SecondFragment : Fragment() {
         val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
         val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
         val repository = ExpenseRepository(dao)
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao)
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao, app)
         val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
 
 
@@ -42,7 +42,6 @@ class SecondFragment : Fragment() {
             R.id.radioButtonGender2 -> 2
             else -> 2 }
 
-            println("veriler $userName ve $gender")
             prefs?.edit()?.putString("userName", userName)?.apply()
             prefs?.edit()?.putInt("gender", gender)?.apply()
 

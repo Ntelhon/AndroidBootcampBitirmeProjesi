@@ -35,7 +35,7 @@ class ExpensesFragment : Fragment() {
         val res = resources
         val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
         val repository = ExpenseRepository(dao)
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao, context)
+        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao, app)
         val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
 
         binding.lifecycleOwner = this
@@ -95,7 +95,6 @@ class ExpensesFragment : Fragment() {
         })
 
         expenseViewModel.allExpenses.observe(viewLifecycleOwner, Observer {
-
             if (prefs != null) {
                 if(!prefs.getBoolean("NowInOne", true)){
                     println("all expenses observer")

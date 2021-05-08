@@ -1,6 +1,5 @@
 package com.example.androidbootcampbitirmeprojesi
 
-import android.content.Context
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.androidbootcampbitirmeprojesi.database.Expense
@@ -106,6 +105,7 @@ fun sumAllExpenses(expenses: List<Expense>?, selectedCurrency :Int): Int {
     var sum = 0
     when {
         expenses.isNullOrEmpty() -> { println("expense verisi boş"); return sum }
+        ExpenseViewModel.tLtoDollar == -1f -> { println("veri güncellenemedi"); return sum }
         selectedCurrency == 0 -> {
             expenses.forEach {
                 when(it.currency) {
