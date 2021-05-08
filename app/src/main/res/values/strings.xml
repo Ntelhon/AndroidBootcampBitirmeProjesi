@@ -47,5 +47,12 @@
     <string name="insert">Ekle</string>
     <string name="comment">Açıklama</string>
     <string name="tutar">Tutar</string>
+    <string name="delete_all_expenses">Tüm Harcamaları Sil</string>
+    <string name="sterling_image_description">Sterlin para birimi</string>
+    <string name="euro_image_description">Euro para birimi</string>
+    <string name="dollar_image_description">Dolar para birimi</string>
+    <string name="TL_image_description">TL para birimi</string>
+    <string name="type_image_description">Harcama türünü belirten simge</string>
+    <string name="back_button_description">Geri dönme tuşu</string>
 
 </resources>
