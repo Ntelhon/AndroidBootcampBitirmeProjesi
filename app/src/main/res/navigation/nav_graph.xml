@@ -19,10 +19,14 @@
             android:id="@+id/action_FirstFragment_to_expenseInsertFragment"
             app:destination="@id/expenseInsertFragment"
             app:popUpTo="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_expenseDetailFragment"
+            app:destination="@id/expenseDetailFragment"
+            app:popUpTo="@id/FirstFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.androidbootcampbitirmeprojesi.SecondFragment"
+        android:name="com.example.androidbootcampbitirmeprojesi.ProfileFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
@@ -34,11 +38,22 @@
     </fragment>
     <fragment
         android:id="@+id/expenseInsertFragment"
-        android:name="com.example.androidbootcampbitirmeprojesi.ExpenseInsertFragment"
+        android:name="com.example.androidbootcampbitirmeprojesi.detailandinsert.ExpenseInsertFragment"
         android:label="fragment_expense_insert"
         tools:layout="@layout/fragment_expense_insert" >
         <action
             android:id="@+id/action_expenseInsertFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expenseDetailFragment"
+        android:name="com.example.androidbootcampbitirmeprojesi.detailandinsert.ExpenseDetailFragment"
+        android:label="ExpenseDetailFragment" >
+        <argument
+            android:name="expenseId"
+            app:argType="long"/>
+        <action
+            android:id="@+id/action_expenseDetailFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

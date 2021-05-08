@@ -2,7 +2,7 @@ package com.example.androidbootcampbitirmeprojesi
 
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.androidbootcampbitirmeprojesi.database.Expense
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.Expense
 
 fun convertCurrencyToString(currency: Int, resources: Resources): String {
     var currencyString = resources.getString(R.string.currency_0)

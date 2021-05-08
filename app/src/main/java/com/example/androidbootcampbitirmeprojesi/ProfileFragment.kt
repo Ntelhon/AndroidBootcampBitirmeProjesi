@@ -7,14 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.androidbootcampbitirmeprojesi.database.ApiDataRoomDatabase
-import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
-import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
 import com.example.androidbootcampbitirmeprojesi.databinding.FragmentSecondBinding
 
-class SecondFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -23,14 +19,6 @@ class SecondFragment : Fragment() {
 
         val binding :FragmentSecondBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_second, container, false)
         val prefs = this.activity?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
-
-        val app = requireNotNull(this.activity).application
-        val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
-        val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
-        val repository = ExpenseRepository(dao)
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDao, app)
-        val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
-
 
         binding.buttonSaveProfile.setOnClickListener {
             var userName = "Yeni Kullanıcı"
@@ -45,7 +33,7 @@ class SecondFragment : Fragment() {
             prefs?.edit()?.putString("userName", userName)?.apply()
             prefs?.edit()?.putInt("gender", gender)?.apply()
 
-            val action = SecondFragmentDirections.actionSecondFragmentToFirstFragment()
+            val action = ProfileFragmentDirections.actionSecondFragmentToFirstFragment()
             findNavController().navigate(action)
         }
 

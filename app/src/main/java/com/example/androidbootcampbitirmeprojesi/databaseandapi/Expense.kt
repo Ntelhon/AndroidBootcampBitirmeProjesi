@@ -1,9 +1,8 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "expense_table")
 data class Expense(

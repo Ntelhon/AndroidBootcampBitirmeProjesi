@@ -1,4 +1,4 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData

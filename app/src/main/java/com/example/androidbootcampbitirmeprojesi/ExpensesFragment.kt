@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.androidbootcampbitirmeprojesi.ExpenseViewModel.Companion.selectedCurrency
-import com.example.androidbootcampbitirmeprojesi.database.*
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.*
 import com.example.androidbootcampbitirmeprojesi.databinding.FragmentExpensesBinding
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -30,7 +30,6 @@ class ExpensesFragment : Fragment() {
         val prefs = this.activity?.getSharedPreferences("com.example.androidbootcampbitirmeprojesi", Context.MODE_PRIVATE)
 
         val app = requireNotNull(this.activity).application
-        val context = context
         val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
         val res = resources
         val apiDataDao = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
@@ -40,8 +39,11 @@ class ExpensesFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val adapter = ExpenseAdapter()
+        val adapter = ExpenseAdapter(ExpenseListener { expenseId ->
+            expenseViewModel.onExpenseClicked(expenseId)
+        })
         binding.recyclerViewExpenses.adapter = adapter
+
         expenseViewModel.allExpenses.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
@@ -82,6 +84,15 @@ class ExpensesFragment : Fragment() {
             expenseViewModel.selectCurrency(3)
             ExpenseViewModel.lastCheckedQuery = 3
         }
+
+        expenseViewModel.navigateDetail.observe(viewLifecycleOwner, Observer {expense ->
+            expense?.let {
+
+                this.findNavController().navigate(ExpensesFragmentDirections.actionFirstFragmentToExpenseDetailFragment(expense))
+                expenseViewModel.onSleepDetailNavigated()
+            }
+
+        })
 
         expenseViewModel.answerApi.observe(viewLifecycleOwner, Observer {
             it?.let { Snackbar.make(requireView(),it, Snackbar.LENGTH_LONG).show() }

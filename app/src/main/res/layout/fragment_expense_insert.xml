@@ -7,7 +7,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExpenseInsertFragment">
+    tools:context=".detailandinsert.ExpenseInsertFragment">
 
     <TextView
         android:id="@+id/textViewInsertTitle"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:maxLength="25" />
+            android:maxLength="55" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -164,7 +164,8 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/tl"
         app:layout_constraintStart_toStartOf="@+id/radioGroup"
-        app:layout_constraintTop_toTopOf="@+id/radioGroup" />
+        app:layout_constraintTop_toTopOf="@+id/radioGroup"
+        android:contentDescription="@string/TL_image_description"/>
 
     <ImageView
         android:id="@+id/imageViewDollar"
@@ -175,7 +176,8 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/dollar"
         app:layout_constraintTop_toBottomOf="@+id/imageViewTL"
-        app:layout_constraintStart_toStartOf="@+id/radioGroup" />
+        app:layout_constraintStart_toStartOf="@+id/radioGroup"
+        android:contentDescription="@string/dollar_image_description"/>
 
     <ImageView
         android:id="@+id/imageViewEuro"
@@ -186,7 +188,8 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/euro"
         app:layout_constraintTop_toBottomOf="@+id/imageViewDollar"
-        app:layout_constraintStart_toStartOf="@+id/radioGroup" />
+        app:layout_constraintStart_toStartOf="@+id/radioGroup"
+        android:contentDescription="@string/euro_image_description"/>
 
     <ImageView
         android:id="@+id/imageViewSterling"
@@ -198,7 +201,8 @@
         android:src="@drawable/sterling"
         app:layout_constraintTop_toBottomOf="@+id/imageViewEuro"
         app:layout_constraintStart_toStartOf="@+id/radioGroup"
-        tools:layout_editor_absoluteX="128dp" />
+        tools:layout_editor_absoluteX="128dp"
+        android:contentDescription="@string/sterling_image_description"/>
 
 
     <Button
@@ -206,7 +210,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
-        android:text="Tüm Harcamaları Sil"
+        android:text="@string/delete_all_expenses"
         app:layout_constraintBottom_toTopOf="@+id/buttonExpenseInsert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

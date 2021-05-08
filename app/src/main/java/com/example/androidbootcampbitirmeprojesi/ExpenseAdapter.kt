@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.androidbootcampbitirmeprojesi.database.Expense
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.Expense
+import com.example.androidbootcampbitirmeprojesi.databinding.ListItemRecyclerBinding
 
-class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
+class ExpenseAdapter(private val clickListener :ExpenseListener) : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
     var data = listOf<Expense>()
         set(value) {
@@ -25,6 +25,8 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
         val item = data[position]
         val res = holder.itemView.context.resources
         val curr = ExpenseViewModel.selectedCurrency
+        holder.bind(item, clickListener)
+
 
         holder.expenseName.text = item.comment
         if (item.comment.length > 15 && item.comment.isEmpty()) {
@@ -49,16 +51,27 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_recycler, parent, false)
+        val binding :ListItemRecyclerBinding = ListItemRecyclerBinding.inflate(layoutInflater, parent, false)
+
         return ViewHolder(
-            view
+            binding
         )
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(val binding: ListItemRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
         val expenseName: TextView = itemView.findViewById(R.id.expense_name)
         val expenseAmountAndCurrency: TextView = itemView.findViewById(R.id.expense_amount_and_currency)
         val expenseType: ImageView = itemView.findViewById(R.id.expense_type)
+
+        fun bind(item :Expense, clickListener: ExpenseListener) {
+            binding.expense = item
+            binding.clickListener = clickListener
+        }
+
     }
+}
+
+class ExpenseListener(val clickListener: (expenseId: Long) -> Unit) {
+    fun onClick(expense: Expense) = clickListener(expense.id)
 }
 

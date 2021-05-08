@@ -1,4 +1,4 @@
-package com.example.androidbootcampbitirmeprojesi
+package com.example.androidbootcampbitirmeprojesi.detailandinsert
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.androidbootcampbitirmeprojesi.database.ApiDataRoomDatabase
-import com.example.androidbootcampbitirmeprojesi.database.Expense
-import com.example.androidbootcampbitirmeprojesi.database.ExpenseRepository
-import com.example.androidbootcampbitirmeprojesi.database.ExpenseRoomDatabase
+import com.example.androidbootcampbitirmeprojesi.ExpenseViewModel
+import com.example.androidbootcampbitirmeprojesi.ExpenseViewModelFactory
+import com.example.androidbootcampbitirmeprojesi.R
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.ApiDataRoomDatabase
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.Expense
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.ExpenseRepository
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.ExpenseRoomDatabase
 import com.example.androidbootcampbitirmeprojesi.databinding.FragmentExpenseInsertBinding
+import com.example.androidbootcampbitirmeprojesi.setImageWithCurrency
 import com.google.android.material.snackbar.Snackbar
 
 class ExpenseInsertFragment : Fragment() {
@@ -20,14 +24,21 @@ class ExpenseInsertFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding : FragmentExpenseInsertBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_expense_insert, container, false)
+        val binding : FragmentExpenseInsertBinding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_expense_insert, container, false)
 
         val app = requireNotNull(this.activity).application
         val dao = ExpenseRoomDatabase.getDatabase(app).expenseDAO()
         val repository = ExpenseRepository(dao)
         val apiDataDAO = ApiDataRoomDatabase.getDatabase(app).apiDataDao()
-        val expenseViewModelFactory = ExpenseViewModelFactory(repository, apiDataDAO, app)
-        val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(ExpenseViewModel::class.java)
+        val expenseViewModelFactory =
+            ExpenseViewModelFactory(
+                repository,
+                apiDataDAO,
+                app
+            )
+        val expenseViewModel = ViewModelProvider(this, expenseViewModelFactory).get(
+            ExpenseViewModel::class.java)
 
         //val items = listOf("Gıda", "Giyim", "Fatura", "Kira", "Eğitim", "Diğer")
         //val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
@@ -35,10 +46,26 @@ class ExpenseInsertFragment : Fragment() {
 
         binding.radioGroup.check(R.id.radioButtonTL)
 
-        binding.imageViewTL.setImageResource(setImageWithCurrency(0))
-        binding.imageViewDollar.setImageResource(setImageWithCurrency(1))
-        binding.imageViewEuro.setImageResource(setImageWithCurrency(2))
-        binding.imageViewSterling.setImageResource(setImageWithCurrency(3))
+        binding.imageViewTL.setImageResource(
+            setImageWithCurrency(
+                0
+            )
+        )
+        binding.imageViewDollar.setImageResource(
+            setImageWithCurrency(
+                1
+            )
+        )
+        binding.imageViewEuro.setImageResource(
+            setImageWithCurrency(
+                2
+            )
+        )
+        binding.imageViewSterling.setImageResource(
+            setImageWithCurrency(
+                3
+            )
+        )
 
         val radioIdType = binding.radioButtonType0.id
 

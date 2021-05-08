@@ -1,4 +1,4 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -7,6 +7,9 @@ import androidx.room.*
 interface ExpenseDAO {
     @Query("Select * From expense_table Order By id DESC")
     fun getExpensesWithId(): LiveData<List<Expense>>
+
+    @Query("Select * From expense_table Where id = :selectingId")
+    suspend fun getExpenseWithId(selectingId: Long): Expense
 
     @Query("Select * From expense_table Order By amount")
     fun getExpensesWithAmount(): LiveData<List<Expense>>

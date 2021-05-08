@@ -1,7 +1,5 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit

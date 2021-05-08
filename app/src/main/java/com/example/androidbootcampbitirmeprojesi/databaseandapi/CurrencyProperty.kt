@@ -1,4 +1,4 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
 data class CurrencyProperty1(
     val TRY_USD: Double,

@@ -1,8 +1,9 @@
 package com.example.androidbootcampbitirmeprojesi
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.androidbootcampbitirmeprojesi.database.*
+import com.example.androidbootcampbitirmeprojesi.databaseandapi.*
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
@@ -34,10 +35,23 @@ class ExpenseViewModel(private val repository: ExpenseRepository,private val api
     val answerApi :LiveData<String>
         get() = _answerApi
 
+    private val _navigateDetail = MutableLiveData<Long>()
+    val navigateDetail :LiveData<Long>
+        get() = _navigateDetail
 
     init {
         _selectedCurrency.value = 0
         getCurrencyValues()
+    }
+
+    fun onExpenseClicked(id :Long) {
+        _navigateDetail.value = id
+        println("veri değişti")
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun onSleepDetailNavigated() {
+        _navigateDetail.value = null
     }
 
     fun insert(expense: Expense) = viewModelScope.launch{

@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="clickListener"
+            type="com.example.androidbootcampbitirmeprojesi.ExpenseListener" />
+        <variable
+            name="expense"
+            type="com.example.androidbootcampbitirmeprojesi.databaseandapi.Expense" />
+        
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:onClick="@{() -> clickListener.onClick(expense)}">
 
     <ImageView
         android:id="@+id/expense_type"
@@ -16,7 +28,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/other" />
+        tools:srcCompat="@drawable/other"
+        android:contentDescription="@string/type_image_description"/>
 
     <TextView
         android:id="@+id/expense_name"
@@ -48,3 +61,4 @@
         tools:text="5$" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

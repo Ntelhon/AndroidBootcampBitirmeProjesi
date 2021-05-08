@@ -1,4 +1,4 @@
-package com.example.androidbootcampbitirmeprojesi.database
+package com.example.androidbootcampbitirmeprojesi.databaseandapi
 
 import android.content.Context
 import androidx.room.Database
